@@ -5,7 +5,7 @@ const {
   PLAYER_O,
 } = require('./enums/playerTypes');
 
-const PLAYS_MAX_NUMBER = 10;
+const PLAYS_MAX_NUMBER = 9;
 
 class Game {
   constructor(input) {
@@ -15,13 +15,15 @@ class Game {
   }
 
   play(board) {
-    if (this.playsCounter < PLAYS_MAX_NUMBER) {
-      boardService.printBoard(board);
-
-      this.input.question(`[${this.currentPlayerSymbol}] Make your move(1 - 9): `, (move) => {
-        this.processMove(board, move);
-      });
+    boardService.printBoard(board);
+    if (this.playsCounter >= PLAYS_MAX_NUMBER) {
+      log.info(`Game is over`);
+      process.exit(0);
     }
+
+    this.input.question(`[${this.currentPlayerSymbol}] Make your move(1 - 9): `, (move) => {
+      this.processMove(board, move);
+    });
   }
 
   processMove(board, move) {
