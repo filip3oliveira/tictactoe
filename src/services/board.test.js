@@ -14,7 +14,7 @@ describe('Test Board', () => {
     expect(result).toStrictEqual([' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']);
   });
 
-  test('calculateWinner shoud step to the next function when there is no winner', () => {
+  test('setSquareValue should place the sign, according to the player\'s move ', () => {
     const result = boardService.setSquareValue(board, 3, 'X');
 
     expect(result[3]).toBe('X');
@@ -26,20 +26,20 @@ describe('Test Board', () => {
     expect(result).toBe(false);
   });
 
-  test('isValidMove should return false when the move is to a occupied square', () => {
+  test('isValidMove should return false when repeated move', () => {
     const testBoard = boardService.setSquareValue(board, 3, 'X');
     const result = boardService.isValidMove(testBoard, 3);
 
     expect(result).toBe(false);
   });
 
-  test('calculateWinner should return null if no winner found', () => {
+  test('calculateWinner should return " " if no winner found', () => {
     const result = boardService.calculateWinner(board);
 
     expect(result).toBe(' ');
   });
 
-  test('calculateWinner should return the winner when conditions match', () => {
+  test('calculateWinner should return the winner when conditions matched', () => {
     const gamePlay1 = boardService.setSquareValue(board, 0, 'X');
     const gamePlay2 = boardService.setSquareValue(gamePlay1, 1, 'X');
     const gamePlay3 = boardService.setSquareValue(gamePlay2, 2, 'X');
