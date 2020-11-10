@@ -1,5 +1,4 @@
 const log = require('loglevel');
-const boardService = require('./services/board.service');
 const {
   PLAYER_X,
   PLAYER_O,
@@ -8,14 +7,20 @@ const {
 const PLAYS_MAX_NUMBER = 9;
 
 class Game {
-  constructor(input) {
+  constructor(input, boardService) {
     this.input = input;
     this.currentPlayerSymbol = PLAYER_X;
     this.playsCounter = 0;
+    this.boardService = boardService;
+  }
+
+  startGame() {
+    const board = this.boardService.createBoard();
+    this.play(board);
   }
 
   play(board) {
-    boardService.printBoard(board);
+    this.boardService.printBoard(board);
     if (this.playsCounter >= PLAYS_MAX_NUMBER) {
       log.info(`Game is over`);
       process.exit(0);
@@ -29,20 +34,20 @@ class Game {
   processMove(board, move) {
     const moveComputed = move - 1;
 
-    if (!boardService.isValidMove(board, moveComputed)) {
+    if (!this.boardService.isValidMove(board, moveComputed)) {
       log.info('That move is not valid, try again.');
       this.play(board);
       return;
     }
 
-    const newBoard = boardService.setSquareValue(board, moveComputed, this.currentPlayerSymbol);
-    this._checkWinner(newBoard);
-    this._changePlayer();
+    const newBoard = this.boardService.setSquareValue(board, moveComputed, this.currentPlayerSymbol);
+    this.#checkWinner(newBoard);
+    this.#changePlayer();
     this.play(newBoard);
   }
 
-  _checkWinner(board) {
-    const winner = boardService.calculateWinner(board);
+  #checkWinner(board) {
+    const winner = this.boardService.calculateWinner(board);
     if (winner !== ' ') {
       log.info(`Winner is ${winner}`);
       process.exit(0);
@@ -52,7 +57,7 @@ class Game {
     this.playsCounter += 1;
   }
 
-  _changePlayer() {
+  #changePlayer() {
     if (this.currentPlayerSymbol === PLAYER_X) {
       this.currentPlayerSymbol = PLAYER_O;
       return;

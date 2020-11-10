@@ -11,10 +11,9 @@ const input = readline.createInterface({
 });
 
 const startGame = () => {
-  const boardGame = boardService.createBoard();
-  const game = new Game(input);
+  const game = new Game(input, boardService);
 
-  game.play(boardGame);
+  game.startGame();
 };
 
 startGame();

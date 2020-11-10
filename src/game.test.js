@@ -20,8 +20,8 @@ describe('Test Game', () => {
     jest.spyOn(boardService, 'calculateWinner').mockReturnValueOnce('X');
     jest.spyOn(boardService, 'isValidMove').mockReturnValueOnce(true);
     jest.spyOn(process, 'exit').mockImplementation(null);
-
-    const game = new Game(input);
+    
+    const game = new Game(input, boardService);
     game.processMove([], 4);
 
     expect(process.exit).toBeCalledTimes(1);
@@ -32,7 +32,7 @@ describe('Test Game', () => {
     jest.spyOn(boardService, 'isValidMove').mockReturnValueOnce(false);
     jest.spyOn(input, 'question').mockImplementation(null);
 
-    const game = new Game(input);
+    const game = new Game(input, boardService);
     game.processMove([], 3);
 
     expect(input.question).toBeCalledTimes(1);
